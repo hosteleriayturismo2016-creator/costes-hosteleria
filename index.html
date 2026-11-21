@@ -1,0 +1,319 @@
+
+<div id="plantilla-costes-blogger">
+<style>
+#plantilla-costes-blogger{--navy:#17365d;--blue:#1f4e78;--yellow:#fff2cc;--green:#e2f0d9;--ink:#263445;--line:#d7dee7;--bg:#f3f6fa}
+#plantilla-costes-blogger *{box-sizing:border-box}
+#plantilla-costes-blogger{background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",Arial,sans-serif}
+#plantilla-costes-blogger header{background:var(--navy);color:white;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+#plantilla-costes-blogger h1{font-size:24px;margin:0}
+#plantilla-costes-blogger header p{margin:5px 0 0;color:#dce8f5}
+#plantilla-costes-blogger .actions{display:flex;gap:8px;flex-wrap:wrap}
+#plantilla-costes-blogger button{border:0;border-radius:6px;padding:9px 13px;font-weight:600;cursor:pointer;background:#fff;color:var(--navy)}
+#plantilla-costes-blogger main{padding:18px;max-width:1800px;margin:auto}
+#plantilla-costes-blogger .tabs{display:flex;gap:6px;overflow:auto;padding-bottom:12px}
+#plantilla-costes-blogger .tab{background:#e4eaf1;color:#34465a;white-space:nowrap}
+#plantilla-costes-blogger .tab.active{background:var(--blue);color:white}
+#plantilla-costes-blogger .panel{display:none;background:white;border:1px solid var(--line);border-radius:10px;padding:18px}
+#plantilla-costes-blogger .panel.active{display:block}
+#plantilla-costes-blogger h2{font-size:20px;color:var(--navy);margin:0 0 5px}
+#plantilla-costes-blogger .sub{color:#657487;margin:0 0 16px}
+#plantilla-costes-blogger .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:7px;max-height:72vh}
+#plantilla-costes-blogger table{border-collapse:separate;border-spacing:0;width:100%;min-width:900px;font-size:12px}
+#plantilla-costes-blogger th{position:sticky;top:0;background:var(--blue);color:white;text-align:left;padding:10px 8px;z-index:1;min-width:105px}
+#plantilla-costes-blogger td{padding:3px;border-bottom:1px solid #e8edf2;border-right:1px solid #eef1f4;min-width:105px;height:34px}
+#plantilla-costes-blogger td input,#plantilla-costes-blogger td select{width:100%;min-width:80px;border:1px solid transparent;border-radius:3px;padding:7px 6px;font:inherit;color:inherit;background:transparent}
+#plantilla-costes-blogger td input:focus,#plantilla-costes-blogger td select:focus{outline:2px solid #6d9bc8;background:white}
+#plantilla-costes-blogger td.entry{background:var(--yellow)}
+#plantilla-costes-blogger td.calc{background:var(--green)}
+#plantilla-costes-blogger td.readonly input{color:#334b35}
+#plantilla-costes-blogger tbody tr:nth-child(even) td:not(.entry):not(.calc){background:#fafbfd}
+#plantilla-costes-blogger .note{background:#f7fafc;border-left:4px solid #8aa9c7;padding:11px 14px;margin:8px 0;border-radius:4px}
+#plantilla-costes-blogger .guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+#plantilla-costes-blogger .guide article{background:#f7fafc;padding:14px;border-radius:7px;border:1px solid var(--line)}
+#plantilla-costes-blogger .guide h3{margin:0 0 5px;color:var(--blue);font-size:15px}
+#plantilla-costes-blogger .status{font-size:12px;color:#657487}
+#plantilla-costes-blogger .class-ESTRELLA{background:#d9ead3!important}
+#plantilla-costes-blogger .class-CABALLO{background:#fce5cd!important}
+#plantilla-costes-blogger .class-PUZZLE{background:#cfe2f3!important}
+#plantilla-costes-blogger .class-PERRO{background:#eadcf8!important}
+@media(max-width:650px){
+#plantilla-costes-blogger header{align-items:flex-start}
+#plantilla-costes-blogger .panel{padding:12px}
+#plantilla-costes-blogger table{font-size:11px}
+}
+</style>
+
+<header>
+<div>
+<h1>Plantilla de Costes, Escandallos y Menu Engineering</h1>
+<p>Control de costes · precios · rentabilidad · planificación de compras</p>
+</div>
+<div class="actions">
+<button onclick="exportData()">Exportar datos</button>
+<button onclick="document.getElementById('importFile').click()">Importar datos</button>
+<input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+<button onclick="if(confirm('¿Borrar todos los datos guardados?')){localStorage.removeItem('plantilla_costes_hosteleria_v1');location.reload()}">Restablecer</button>
+</div>
+</header>
+
+<main>
+<nav class="tabs" id="tabs"></nav>
+
+<section class="panel active" id="p-Instrucciones">
+<h2>Instrucciones de uso</h2>
+<p class="sub">Guía de utilización de la plantilla.</p>
+<div class="note"><b>OBJETIVO</b><br>Controlar el coste real de cada bocadillo o plato, fijar precios con un coste objetivo del 30% y analizar ventas y compras para la próxima temporada.</div>
+<div class="guide">
+<article><h3>1. INGREDIENTES</h3>Introduce cada materia prima una sola vez. En unidad de compra elige kg, l o unid.; indica el precio de compra y el contenido de esa unidad. Para kg/l usa 1.000 (g o ml); para unidad usa 1.</article>
+<article><h3>2. ESCANDALLOS</h3>Añade una línea por ingrediente y producto. La cantidad se expresa en g, ml o unidades por ración. El coste de cada línea se calcula automáticamente.</article>
+<article><h3>3. PRODUCTOS</h3>Registra cada bocadillo o plato. El coste se trae del escandallo. Introduce el precio de venta SIN IVA y el tipo de IVA aplicable.</article>
+<article><h3>4. MENU ENGINEERING</h3>Introduce las unidades vendidas, previsión de ventas para la próxima temporada, stock disponible y stock de seguridad.</article>
+<article><h3>CLASIFICACIÓN</h3>Popularidad alta: unidades vendidas iguales o superiores al 70% de la media. Rentabilidad alta: margen de contribución igual o superior a la media. Estrella = alta/alta; Caballo = alta/baja; Puzzle = baja/alta; Perro = baja/baja.</article>
+<article><h3>PRECIO OBJETIVO</h3>Precio recomendado sin IVA = coste por ración / 30%. Es una referencia que debe contrastarse con el mercado y los demás costes del negocio.</article>
+</div>
+<div class="note"><b>IMPORTANTE</b><br>El IVA está configurado inicialmente al 10% como valor orientativo. Confirma el tipo aplicable a cada producto. Las celdas amarillas son entradas; las verdes contienen cálculos.</div>
+<div class="note"><b>CAPACIDAD</b><br>La plantilla incluye 200 filas preparadas por hoja.</div>
+</section>
+
+<section class="panel" id="p-Ingredientes">
+<h2>Maestro de ingredientes</h2>
+<p class="sub">Registra aquí los precios de compra y las mermas.</p>
+<div class="table-wrap"><table><thead id="head-Ingredientes"></thead><tbody id="body-Ingredientes"></tbody></table></div>
+</section>
+
+<section class="panel" id="p-Escandallos">
+<h2>Escandallos / recetas</h2>
+<p class="sub">Una fila por ingrediente utilizado en cada producto. Utiliza exactamente los nombres del maestro de ingredientes y de Productos.</p>
+<div class="table-wrap"><table><thead id="head-Escandallos"></thead><tbody id="body-Escandallos"></tbody></table></div>
+</section>
+
+<section class="panel" id="p-Productos">
+<h2>Ficha de productos y precios</h2>
+<p class="sub">Introduce el nombre del producto y el precio de venta sin IVA. El coste procede del escandallo.</p>
+<div class="table-wrap"><table><thead id="head-Productos"></thead><tbody id="body-Productos"></tbody></table></div>
+</section>
+
+<section class="panel" id="p-Menu Engineering">
+<h2>Menu Engineering y plan de pedidos</h2>
+<p class="sub">Rellena ventas, previsión y stock. La clasificación se calcula frente a la media de popularidad y al margen medio.</p>
+<div class="table-wrap"><table><thead id="head-Menu Engineering"></thead><tbody id="body-Menu Engineering"></tbody></table></div>
+</section>
+
+<p class="status" id="saveStatus" aria-live="polite">Los cambios se guardan automáticamente en este navegador.</p>
+</main>
+
+<script>
+(function(){
+const KEY='plantilla_costes_hosteleria_v1',N=200;
+const root=document.getElementById('plantilla-costes-blogger');
+
+const defs={
+'Ingredientes':{
+heads:['Ingrediente','Unidad compra (kg/l/unid.)','Precio compra (€)','Contenido unidad (g/ml/unid.)','Coste por g/ml/unid. (€)','Merma (%)','Coste neto por g/ml/unid. (€)','Proveedor / notas'],
+entry:[0,1,2,3,5,7],
+formats:{2:'€',4:'€',5:'%',6:'€'}
+},
+'Escandallos':{
+heads:['Producto (nombre exacto)','Ingrediente (nombre exacto)','Cantidad por ración (g/ml/unid.)','Coste neto unitario (€)','Coste de la línea (€)','Observaciones'],
+entry:[0,1,2,5],
+formats:{2:'num',3:'€',4:'€'}
+},
+'Productos':{
+heads:['Producto','Categoría','Coste receta (€)','Precio venta SIN IVA (€)','IVA (%)','Precio venta CON IVA (€)','Margen contribución (€)','Margen (%)','Coste / precio (%)','Precio recomendado SIN IVA (€)','Diferencia vs recomendado (€)'],
+entry:[0,1,3,4],
+formats:{2:'€',3:'€',4:'%',5:'€',6:'€',7:'%',8:'%',9:'€',10:'€'}
+},
+'Menu Engineering':{
+heads:['Producto','Unidades vendidas','Mix ventas (%)','Precio sin IVA (€)','Coste por unidad (€)','Margen contrib. unitario (€)','Margen contrib. total (€)','Popularidad','Rentabilidad','Clasificación','Previsión próxima temporada (uds.)','Stock disponible (uds.)','Stock seguridad (uds.)','Cantidad a solicitar (uds.)'],
+entry:[1,10,11,12],
+formats:{1:'int',2:'%',3:'€',4:'€',5:'€',6:'€',10:'int',11:'int',12:'int',13:'int'}
+}
+};
+
+let data=load();
+
+function blank(){
+let x=Object.fromEntries(Object.keys(defs).map(s=>[s,Array.from({length:N},()=>({}))]));
+x.Productos.forEach(r=>r[4]=0.1);
+return x;
+}
+
+function load(){
+try{
+let x=JSON.parse(localStorage.getItem(KEY));
+return x||blank();
+}catch(e){return blank()}
+}
+
+function save(){
+try{
+localStorage.setItem(KEY,JSON.stringify(data));
+root.querySelector('#saveStatus').textContent='Guardado automáticamente · '+new Date().toLocaleTimeString('es-ES');
+}catch(e){
+root.querySelector('#saveStatus').textContent='No se pudo guardar automáticamente. Exporta una copia de seguridad.';
+}
+}
+
+function val(s,r,c){return data[s][r]?.[c]??''}
+function num(x){let n=parseFloat(String(x??'').replace(',','.'));return Number.isFinite(n)?n:0}
+function sum(a){return a.reduce((x,y)=>x+y,0)}
+function avg(a){let z=a.filter(x=>x>0);return z.length?sum(z)/z.length:0}
+
+function findIngredient(name){
+return data.Ingredientes.findIndex(x=>String(x[0]??'').trim()===String(name??'').trim()&&name);
+}
+
+function findProduct(name){
+return data.Productos.findIndex(x=>String(x[0]??'').trim()===String(name??'').trim()&&name);
+}
+
+function ingCost(name){
+let i=findIngredient(name);
+if(i<0)return 0;
+let d=data.Ingredientes[i];
+let base=num(d[2])/num(d[3]);
+return num(d[5])>=1?0:(base/(1-num(d[5])))||0;
+}
+
+function recipeCost(name){
+return sum(data.Escandallos.filter(x=>x[0]===name).map(x=>num(x[2])*ingCost(x[1])));
+}
+
+function productCalc(r){
+let d=data.Productos[r],cost=recipeCost(d[0]),price=num(d[3]),tax=num(d[4]);
+return [cost,price?price*(1+tax):'',price?price-cost:'',price?(price-cost)/price:0,price?cost/price:0,cost/.30,price?price-cost-cost/.30:''];
+}
+
+function menuCalc(){
+let sales=data['Menu Engineering'].map(x=>num(x[1]));
+let names=data.Productos.map(x=>x[0]);
+let rows=data['Menu Engineering'];
+let margins=rows.map((x,i)=>{
+let pi=findProduct(x[0]||names[i]);
+let pc=pi>=0?productCalc(pi):[0];
+return num(x[1])>0?num(pc[1])-num(pc[0]):0;
+});
+let avSales=avg(sales),avMargin=avg(margins);
+return rows.map((x,i)=>{
+let pi=findProduct(x[0]||names[i]),pc=pi>=0?productCalc(pi):[0,0];
+let qty=num(x[1]),m=num(pc[1])-num(pc[0]);
+let pop=qty>=.7*avSales?'Alta':'Baja';
+let prof=m>=avMargin?'Alta':'Baja';
+let cls=!x[0]||x[1]===''?'':pop==='Alta'&&prof==='Alta'?'ESTRELLA':pop==='Alta'?'CABALLO':prof==='Alta'?'PUZZLE':'PERRO';
+return {name:x[0]||names[i]||'',mix:sum(sales)?qty/sum(sales):0,price:pc[1]||0,cost:pc[0]||0,margin:m,total:qty*m,pop,prof,cls,order:Math.max(0,num(x[10])+num(x[12])-num(x[11]))};
+});
+}
+
+function computed(s,r,c){
+let d=data[s][r];
+if(s==='Ingredientes'){
+if(c===4)return num(d[3])?num(d[2])/num(d[3]):0;
+if(c===6)return num(d[5])<1?(num(d[4])/(1-num(d[5]))||0):0;
+}
+if(s==='Escandallos'){
+if(c===3)return ingCost(d[1]);
+if(c===4)return num(d[2])*ingCost(d[1]);
+}
+if(s==='Productos'){
+let a=productCalc(r);
+return ({2:a[0],5:a[1],6:a[2],7:a[3],8:a[4],9:a[5],10:a[6]})[c]??'';
+}
+if(s==='Menu Engineering'){
+let a=menuCalc()[r];
+return ({0:a.name,2:a.mix,3:a.price,4:a.cost,5:a.margin,6:a.total,7:a.pop,8:a.prof,9:a.cls,13:a.order})[c]??'';
+}
+return '';
+}
+
+function fmt(v,f){
+if(v===''||v===null||v===undefined)return '';
+if(typeof v==='string')return v;
+if(f==='%')return (v*100).toLocaleString('es-ES',{maximumFractionDigits:1})+'%';
+if(f==='€')return v.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+return v.toLocaleString('es-ES',{maximumFractionDigits:3});
+}
+
+function esc(x){
+return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function inputCell(s,r,c){
+let d=defs[s],isEntry=d.entry.includes(c),v=val(s,r,c),html='',f=d.formats?.[c];
+
+if(!isEntry){
+let x=computed(s,r,c);
+return `<td class="calc readonly ${s==='Menu Engineering'&&c===9&&x?'class-'+x:''}"><input tabindex="-1" readonly value="${esc(fmt(x,f))}" title="Calculado automáticamente"></td>`;
+}
+
+if(s==='Ingredientes'&&c===1){
+html=`<select data-s="${s}" data-r="${r}" data-c="${c}"><option value=""></option>${['kg','l','unid.'].map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select>`;
+}else if(s==='Productos'&&c===4){
+html=`<input data-s="${s}" data-r="${r}" data-c="${c}" type="number" step=".01" value="${esc(v===''?'.1':v)}" placeholder="0,10">`;
+}else{
+let type=(f==='€'||f==='%'||f==='num'||f==='int')?'number':'text';
+let step=f==='%'?'.01':f==='num'?'.001':'any';
+html=`<input data-s="${s}" data-r="${r}" data-c="${c}" type="${type}" ${type==='number'?`step="${step}"`:''} value="${esc(v)}">`;
+}
+return `<td class="entry">${html}</td>`;
+}
+
+function renderSheet(s){
+let d=defs[s];
+root.querySelector('#head-'+s).innerHTML='<tr>'+d.heads.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+let rows='';
+for(let r=0;r<N;r++){
+rows+='<tr>'+d.heads.map((_,c)=>inputCell(s,r,c)).join('')+'</tr>';
+}
+root.querySelector('#body-'+s).innerHTML=rows;
+}
+
+function renderAll(){
+Object.keys(defs).forEach(renderSheet);
+root.querySelectorAll('input[data-s],select[data-s]').forEach(el=>{
+el.addEventListener('change',()=>{
+let s=el.dataset.s,r=+el.dataset.r,c=+el.dataset.c;
+data[s][r][c]=el.value;
+save();
+renderAll();
+});
+});
+}
+
+let names=['Instrucciones',...Object.keys(defs)];
+root.querySelector('#tabs').innerHTML=names.map((n,i)=>`<button class="tab ${i===0?'active':''}" data-tab="${n}">${n}</button>`).join('');
+
+root.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+root.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));
+root.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='p-'+b.dataset.tab));
+});
+
+window.exportData=function(){
+let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+let a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='datos_plantilla_costes.json';
+a.click();
+URL.revokeObjectURL(a.href);
+};
+
+window.importData=function(e){
+let f=e.target.files[0];
+if(!f)return;
+let rd=new FileReader();
+rd.onload=()=>{
+try{
+let x=JSON.parse(rd.result);
+if(!x.Ingredientes||!x.Productos)throw 0;
+data=x;
+save();
+renderAll();
+alert('Datos importados correctamente.');
+}catch(_){alert('El archivo no tiene un formato válido.')}
+};
+rd.readAsText(f);
+};
+
+renderAll();
+})();
+</script>
+</div>
